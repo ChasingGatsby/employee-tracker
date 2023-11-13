@@ -22,7 +22,7 @@ CREATE TABLE employee (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    role_id INT,
+    role_id INT NOT NULL,
     manager_id INT REFERENCES employee(id),
     FOREIGN KEY (role_id)
     REFERENCES role(id)
