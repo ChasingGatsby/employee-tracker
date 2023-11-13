@@ -41,7 +41,7 @@ const addDept = function () {
     });
 };
 
-const insertDept = (name) => 
+const insertDept = (name) =>
   db.query(
     `INSERT INTO department (department_name) VALUES ('${name}')`,
     (err, result) => {
@@ -49,33 +49,6 @@ const insertDept = (name) =>
         console.log(err);
       }
       console.log("Department added");
-    }
-  );
-
-
-
-
-
-  
-const roleQuery = (data) =>
-  db.query(
-    `INSERT INTO role (title, salary, department_id) VALUES (${data.title}, ${data.salary}, ${data.department})`,
-    (err, result) => {
-      if (err) {
-        console.log * err;
-      }
-      console.log(result);
-    }
-  );
-
-const employeeQuery = (data) =>
-  db.query(
-    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${data.firstName}, ${data.lastName}, ${data.role}, ${data.manager})`,
-    (err, result) => {
-      if (err) {
-        console.log * err;
-      }
-      console.log(result);
     }
   );
 
@@ -98,8 +71,30 @@ const addRole = function () {
         message: "What department does this role belong to?",
       },
     ])
-    .then((add) => roleQuery(add));
+    .then((answer) => insertRole(answer));
 };
+
+const insertRole = (data) =>
+  db.query(
+    `INSERT INTO role (title, salary, department_id) VALUES ('${data.title}', ${data.salary}, ${data.department})`,
+    (err, result) => {
+      if (err) {
+        console.log * err;
+      }
+      console.log("New Role Added");
+    }
+  );
+
+const insertEmployee = (data) =>
+  db.query(
+    `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${data.firstName}', '${data.lastName}', ${data.role}, ${data.manager})`,
+    (err, result) => {
+      if (err) {
+        console.log * err;
+      }
+      console.log(result);
+    }
+  );
 
 const addEmployee = function () {
   inquirer
@@ -125,7 +120,7 @@ const addEmployee = function () {
         message: "Who is the employee's manager?",
       },
     ])
-    .then((add) => employeeQuery(add));
+    .then((answers) => insertEmployee(answers));
 };
 
 const edits = {

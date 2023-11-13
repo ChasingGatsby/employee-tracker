@@ -1,16 +1,4 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "employee_db",
-  },
-  console.log("Connected to employee_db database")
-);
-
-
 
 const {
   viewDept,
@@ -20,6 +8,7 @@ const {
   addRole,
   addEmployee,
 } = require("./utils/query");
+
 let promptEnd = false;
 
 function promptUser() {
@@ -46,17 +35,17 @@ function promptUser() {
       if (choice === "View All Departments") {
         viewDept();
       } else if (choice === "View All Roles") {
-        viewRole()
+        viewRole();
       } else if (choice === "View All Employees") {
         viewEmployee();
       } else if (choice === "Add Department") {
-        addDept()
+        addDept();
       } else if (choice === "Add Role") {
-        addRole()
+        addRole();
       } else if (choice === "Add Employee") {
-        addEmployee()
+        addEmployee();
       }
     });
 }
 
-promptUser()
+promptUser();
