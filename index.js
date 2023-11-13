@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const { selectOption } = require("./utils/options");
+const selectOption = require("./utils/options");
 
 const db = mysql.createConnection(
   {
@@ -34,3 +34,5 @@ const promptUser = () => {
 function init() {
   promptUser().then((choice) => selectOption(choice)).then(promptUser());
 }
+
+init()

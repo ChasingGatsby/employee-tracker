@@ -8,7 +8,7 @@ const db = mysql.createConnection(
   console.log("Connected to employee_db database")
 );
 const inquirer = require("inquirer");
-const{addDept} = require('./table_edits')
+const { addDept, addRole, addEmployee } = require("./table_edits");
 
 const viewDept = db.query("SELECT * FROM department", (err, result) => {
   console.log(result);
@@ -23,13 +23,15 @@ const viewEmployee = db.query("SELECT * FROM employee", (err, result) =>
 );
 
 function addDept() {
-  inquirer.prompt([
-    {
-      type: "input",
-      name: "name",
-      message: "What is the name of the department?",
-    },
-  ]).then();
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the department?",
+      },
+    ])
+    .then();
 }
 
 function selectOption(choice) {
@@ -41,8 +43,12 @@ function selectOption(choice) {
     case "View All Employees":
       viewEmployee();
     case "Add Department":
-        addDept();
+      addDept();
+    case "Add Role":
+      addRole();
+    case "Add Employee":
+      addEmployee();
   }
 }
 
-module.exports = options
+module.exports = selectOption;
