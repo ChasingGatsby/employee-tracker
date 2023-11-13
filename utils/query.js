@@ -71,7 +71,10 @@ const addRole = function () {
         message: "What department does this role belong to?",
       },
     ])
-    .then((answer) => insertRole(answer));
+    .then((answer) => {
+      const newRole = answer;
+      insertRole(newRole);
+    });
 };
 
 const insertRole = (data) =>
@@ -92,7 +95,7 @@ const insertEmployee = (data) =>
       if (err) {
         console.log * err;
       }
-      console.log(result);
+      console.log("New Employee Added");
     }
   );
 
@@ -120,7 +123,27 @@ const addEmployee = function () {
         message: "Who is the employee's manager?",
       },
     ])
-    .then((answers) => insertEmployee(answers));
+    .then((answers) => {
+      const newEmployee = answers;
+      insertEmployee(newEmployee);
+    });
+};
+
+const updateEmployee = function () {
+  let employeeList;
+  db.query("SELECT first_name, last_name FROM employee", (err, result) => {
+    employeeList = result.map((emp) => {
+      return `${emp.first_name} ${emp.last_name}`;
+    });
+    inquirer.prompt([
+      {
+        type: "list",
+        name: "employee",
+        message: "Which employee's role do you want to update?",
+        choices: employeeList,
+      },
+    ]);
+  });
 };
 
 const edits = {
@@ -130,6 +153,7 @@ const edits = {
   addDept,
   addRole,
   addEmployee,
+  updateEmployee,
 };
 
 module.exports = edits;

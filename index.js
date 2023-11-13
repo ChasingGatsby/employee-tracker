@@ -7,6 +7,7 @@ const {
   addDept,
   addRole,
   addEmployee,
+  updateEmployee,
 } = require("./utils/query");
 
 let promptEnd = false;
@@ -44,6 +45,8 @@ function promptUser() {
         addRole();
       } else if (choice === "Add Employee") {
         addEmployee();
+      } else if (choice === "Update Employee Role") {
+        updateEmployee()
       }
     });
 }
