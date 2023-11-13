@@ -12,18 +12,18 @@ const db = mysql.createConnection(
 
 const viewDept = function () {
   db.query("SELECT * FROM department", (err, result) => {
-    console.log(result);
+    console.table(result);
   });
 };
 
 const viewRole = function () {
   db.query("SELECT * FROM role", (err, result) => {
-    console.log(result);
+    console.table(result);
   });
 };
 
 const viewEmployee = function () {
-  db.query("SELECT * FROM employee", (err, result) => console.log(result));
+  db.query("SELECT * FROM employee", (err, result) => console.table(result));
 };
 
 const addDept = function () {
@@ -77,16 +77,30 @@ const addRole = function () {
     });
 };
 
-const insertRole = (data) =>
+const insertRole = (data) => {
+  const { title, salary, department } = data;
   db.query(
-    `INSERT INTO role (title, salary, department_id) VALUES ('${data.title}', ${data.salary}, ${data.department})`,
+    `SELECT id FROM department WHERE department_name = ?`,
+    department,
     (err, result) => {
       if (err) {
-        console.log * err;
+        console.log(err);
+      } else {
+        const deptID = result[0].id;
+        console.log(deptID)
+        db.query(
+          `INSERT INTO role (title, salary, department_id) VALUES ('${title}', ${salary}, ${deptID})`,
+          (err, result) => {
+            if (err) {
+              console.log * err;
+            }
+            console.log("New Role Added");
+          }
+        );
       }
-      console.log("New Role Added");
     }
   );
+};
 
 const insertEmployee = (data) =>
   db.query(
