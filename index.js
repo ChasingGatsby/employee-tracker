@@ -1,7 +1,5 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
-const selectOption = require("./utils/options");
-
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -12,27 +10,53 @@ const db = mysql.createConnection(
   console.log("Connected to employee_db database")
 );
 
-const promptUser = () => {
-  return inquirer.prompt([
-    {
-      type: "list",
-      name: "option",
-      message: "What would you like to do?",
-      choices: [
-        "View All Departments",
-        "View All Roles",
-        "View All Employees",
-        "Add Department",
-        "Add Role",
-        "Add Employee",
-        "Update Employee Role",
-      ],
-    },
-  ]);
-};
 
-function init() {
-  promptUser().then((choice) => selectOption(choice)).then(promptUser());
+
+const {
+  viewDept,
+  viewRole,
+  viewEmployee,
+  addDept,
+  addRole,
+  addEmployee,
+} = require("./utils/query");
+let promptEnd = false;
+
+function promptUser() {
+  promptEnd = false;
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "option",
+        message: "What would you like to do?",
+        choices: [
+          "View All Departments",
+          "View All Roles",
+          "View All Employees",
+          "Add Department",
+          "Add Role",
+          "Add Employee",
+          "Update Employee Role",
+        ],
+      },
+    ])
+    .then((answers) => {
+      const choice = answers.option;
+      if (choice === "View All Departments") {
+        viewDept();
+      } else if (choice === "View All Roles") {
+        viewRole()
+      } else if (choice === "View All Employees") {
+        viewEmployee();
+      } else if (choice === "Add Department") {
+        addDept()
+      } else if (choice === "Add Role") {
+        addRole()
+      } else if (choice === "Add Employee") {
+        addEmployee()
+      }
+    });
 }
 
-init()
+promptUser()

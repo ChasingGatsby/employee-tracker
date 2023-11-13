@@ -1,3 +1,4 @@
+const mysql = require("mysql2");
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -7,48 +8,43 @@ const db = mysql.createConnection(
   },
   console.log("Connected to employee_db database")
 );
-const inquirer = require("inquirer");
 const { addDept, addRole, addEmployee } = require("./table_edits");
 
 const viewDept = db.query("SELECT * FROM department", (err, result) => {
   console.log(result);
 });
 
-const viewRole = db.query("SELECT * FROM role", (err, result) => {
-  console.log(result);
-});
+// const viewRole = db.query("SELECT * FROM role", (err, result) => {
+//   console.log(result);
+// });
 
-const viewEmployee = db.query("SELECT * FROM employee", (err, result) =>
-  console.log(result)
-);
+// const viewEmployee = db.query("SELECT * FROM employee", (err, result) =>
+//   console.log(result)
+// );
 
-function addDept() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "What is the name of the department?",
-      },
-    ])
-    .then();
-}
+// function selectOption(choice) {
+//   switch (choice) {
+//     case "View All Departments":
+//       viewDept();
+//       break
+//     case "View All Roles":
+//       viewRole();
+//       break
+//     case "View All Employees":
+//       viewEmployee();
+//       break
+//     case "Add Department":
+//       addDept();
+//       break
+//     case "Add Role":
+//       addRole();
+//       break
+//     case "Add Employee":
+//       addEmployee();
+//       break
+//   }
+// }
 
-function selectOption(choice) {
-  switch (choice) {
-    case "View All Departments":
-      viewDept();
-    case "View All Roles":
-      viewRole();
-    case "View All Employees":
-      viewEmployee();
-    case "Add Department":
-      addDept();
-    case "Add Role":
-      addRole();
-    case "Add Employee":
-      addEmployee();
-  }
-}
+const options = {selectOption}
 
-module.exports = selectOption;
+module.exports = options;

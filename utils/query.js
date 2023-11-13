@@ -1,3 +1,5 @@
+const inquirer = require("inquirer");
+const mysql = require("mysql2");
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -7,19 +9,54 @@ const db = mysql.createConnection(
   },
   console.log("Connected to employee_db database")
 );
-const inquirer = require("inquirer");
 
-const deptQuery = (name) =>
+const viewDept = function () {
+  db.query("SELECT * FROM department", (err, result) => {
+    console.log(result);
+  });
+};
+
+const viewRole = function () {
+  db.query("SELECT * FROM role", (err, result) => {
+    console.log(result);
+  });
+};
+
+const viewEmployee = function () {
+  db.query("SELECT * FROM employee", (err, result) => console.log(result));
+};
+
+const addDept = function () {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the department?",
+      },
+    ])
+    .then((answer) => {
+      const departmentName = answer.name;
+      insertDept(departmentName);
+    });
+};
+
+const insertDept = (name) => 
   db.query(
-    `INSERT INTO department (department_name) VALUES (${name})`,
+    `INSERT INTO department (department_name) VALUES ('${name}')`,
     (err, result) => {
       if (err) {
         console.log(err);
       }
-      console.log(result);
+      console.log("Department added");
     }
   );
 
+
+
+
+
+  
 const roleQuery = (data) =>
   db.query(
     `INSERT INTO role (title, salary, department_id) VALUES (${data.title}, ${data.salary}, ${data.department})`,
@@ -42,19 +79,7 @@ const employeeQuery = (data) =>
     }
   );
 
-function addDept() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "What is the name of the department?",
-      },
-    ])
-    .then((add) => deptQuery(add));
-}
-
-function addRole() {
+const addRole = function () {
   inquirer
     .prompt([
       {
@@ -74,9 +99,9 @@ function addRole() {
       },
     ])
     .then((add) => roleQuery(add));
-}
+};
 
-function addEmployee() {
+const addEmployee = function () {
   inquirer
     .prompt([
       {
@@ -101,9 +126,12 @@ function addEmployee() {
       },
     ])
     .then((add) => employeeQuery(add));
-}
+};
 
 const edits = {
+  viewDept,
+  viewRole,
+  viewEmployee,
   addDept,
   addRole,
   addEmployee,
