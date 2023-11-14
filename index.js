@@ -8,7 +8,7 @@ const {
   addRole,
   addEmployee,
   updateEmployee,
-} = require("./utils/query");
+} = require("./utils/inquirer");
 
 let promptEnd = false;
 

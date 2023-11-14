@@ -1,4 +1,3 @@
-const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const db = mysql.createConnection(
   {
@@ -10,37 +9,6 @@ const db = mysql.createConnection(
   console.log("Connected to employee_db database")
 );
 
-const viewDept = function () {
-  db.query("SELECT * FROM department", (err, result) => {
-    console.table(result);
-  });
-};
-
-const viewRole = function () {
-  db.query("SELECT * FROM role", (err, result) => {
-    console.table(result);
-  });
-};
-
-const viewEmployee = function () {
-  db.query("SELECT * FROM employee", (err, result) => console.table(result));
-};
-
-const addDept = function () {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "What is the name of the department?",
-      },
-    ])
-    .then((answer) => {
-      const departmentName = answer.name;
-      insertDept(departmentName);
-    });
-};
-
 const insertDept = (name) =>
   db.query(
     `INSERT INTO department (department_name) VALUES ('${name}')`,
@@ -51,31 +19,6 @@ const insertDept = (name) =>
       console.log("Department added");
     }
   );
-
-const addRole = function () {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "What is the name of the role?",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "What is the salary of the role?",
-      },
-      {
-        type: "input",
-        name: "department",
-        message: "What department does this role belong to?",
-      },
-    ])
-    .then((answer) => {
-      const newRole = answer;
-      insertRole(newRole);
-    });
-};
 
 const insertRole = (data) => {
   const { title, salary, department } = data;
@@ -129,68 +72,6 @@ const insertEmployee = (data) => {
   );
 };
 
-const addEmployee = function () {
-  let employeeList;
-  db.query("SELECT first_name, last_name FROM employee", (err, result) => {
-    employeeList = result.map((emp) => {
-      return `${emp.first_name} ${emp.last_name}`;
-    });
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          name: "firstName",
-          message: "What is the employee's first name?",
-        },
-        {
-          type: "input",
-          name: "lastName",
-          message: "What is the employee's last name?",
-        },
-        {
-          type: "input",
-          name: "role",
-          message: "What is the employee's role?",
-        },
-        {
-          type: "list",
-          name: "manager",
-          message: "Who is the employee's manager?",
-          choices: employeeList,
-        },
-      ])
-      .then((answers) => {
-        const newEmployee = answers;
-        insertEmployee(newEmployee);
-      });
-  });
-};
+const query = { insertDept, insertRole, insertEmployee };
 
-const updateEmployee = function () {
-  let employeeList;
-  db.query("SELECT first_name, last_name FROM employee", (err, result) => {
-    employeeList = result.map((emp) => {
-      return `${emp.first_name} ${emp.last_name}`;
-    });
-    inquirer.prompt([
-      {
-        type: "list",
-        name: "employee",
-        message: "Which employee's role do you want to update?",
-        choices: employeeList,
-      },
-    ]);
-  });
-};
-
-const edits = {
-  viewDept,
-  viewRole,
-  viewEmployee,
-  addDept,
-  addRole,
-  addEmployee,
-  updateEmployee,
-};
-
-module.exports = edits;
+module.exports = query;
