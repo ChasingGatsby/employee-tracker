@@ -14,7 +14,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 Values ('Aiden', 'DeGalles', 4, 7),
     ('Jasper', 'Castello', 5, null),
     ('Noelle', 'Pulcinea', 3,1),
-    ('Luciana', 'Roland,', 2,2),
+    ('Luciana', 'Roland', 2,2),
     ('Sarah', 'Haystrom', 6, null),
     ('Karen', 'Kolter', 2, 1),
     ('Graham', 'Pulcinea', 3, null);

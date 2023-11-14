@@ -104,59 +104,66 @@ const insertRole = (data) => {
 
 const insertEmployee = (data) => {
   const { firstName, lastName, role, manager } = data;
-  const managerStr = manager.replace(/\s/g, "");
-  console.log(managerStr);
+  const managerName = manager.split(" ");
   db.query(
-    `SELECT CONCAT()`
-    // `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${data.firstName}', '${data.lastName}', ${data.role}, ${data.manager})`,
-    // (err, result) => {
-    //   if (err) {
-    //     console.log * err;
-    //   }
-    //   console.log("New Employee Added");
-    // }
+    `SELECT id FROM employee WHERE first_name = '${managerName[0]}' AND last_name = '${managerName[1]}'`,
+    (err, mgrResult) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      db.query(
+        `SELECT id FROM role WHERE title = '${role}'`,
+        (err, roleResult) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          db.query(
+            `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', ${roleResult[0].id}, ${mgrResult[0].id})`
+          );
+          console.log("New Employee Added");
+        }
+      );
+    }
   );
 };
 
 const addEmployee = function () {
   let employeeList;
-  let roleList;
-  db.query(
-    "SELECT first_name, last_name FROM employee",
-    (err, result) => {
-      employeeList = result.map((emp) => {
-        return `${emp.first_name} ${emp.last_name}`;
+  db.query("SELECT first_name, last_name FROM employee", (err, result) => {
+    employeeList = result.map((emp) => {
+      return `${emp.first_name} ${emp.last_name}`;
+    });
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "firstName",
+          message: "What is the employee's first name?",
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "What is the employee's last name?",
+        },
+        {
+          type: "input",
+          name: "role",
+          message: "What is the employee's role?",
+        },
+        {
+          type: "list",
+          name: "manager",
+          message: "Who is the employee's manager?",
+          choices: employeeList,
+        },
+      ])
+      .then((answers) => {
+        const newEmployee = answers;
+        insertEmployee(newEmployee);
       });
-      inquirer
-        .prompt([
-          {
-            type: "input",
-            name: "firstName",
-            message: "What is the employee's first name?",
-          },
-          {
-            type: "input",
-            name: "lastName",
-            message: "What is the employee's last name?",
-          },
-          {
-            type: "input",
-            name: "role",
-            message: "What is the employee's role?",
-          },
-          {
-            type: "list",
-            name: "manager",
-            message: "Who is the employee's manager?",
-            choices: employeeList,
-          },
-        ])
-        .then((answers) => {
-          const newEmployee = answers;
-          insertEmployee(newEmployee);
-        });
-    }
-  );
+  });
 };
 
 const updateEmployee = function () {
