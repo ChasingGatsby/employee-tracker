@@ -18,15 +18,21 @@ const {
 } = require("./query");
 
 const viewDept = function () {
-  db.query("SELECT * FROM department", (err, result) => {
-    console.table(result);
-  });
+  db.query(
+    "SELECT id, department_name as Department FROM department",
+    (err, result) => {
+      console.table(result);
+    }
+  );
 };
 
 const viewRole = function () {
-  db.query("SELECT * FROM role", (err, result) => {
-    console.table(result);
-  });
+  db.query(
+    "SELECT id, title as Title, salary as Salary, department_id as Dept_ID FROM role",
+    (err, result) => {
+      console.table(result);
+    }
+  );
 };
 
 const viewEmployee = function () {

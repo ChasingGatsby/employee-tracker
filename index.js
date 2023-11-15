@@ -25,6 +25,7 @@ function promptUser() {
           "Add Role",
           "Add Employee",
           "Update Employee Role",
+          "Quit",
         ],
       },
     ])
@@ -44,13 +45,14 @@ function promptUser() {
         addEmployee();
       } else if (choice === "Update Employee Role") {
         updateEmployee();
+      } else if (choice === "Quit") {
+        process.exit(0);
       }
-      // promptUser();
     });
 }
 
-function init () {
-  promptUser()
+function init() {
+  promptUser();
 }
 
-init()
+init();
