@@ -10,7 +10,12 @@ const db = mysql.createConnection(
   },
   console.log("Connected to employee_db database")
 );
-const { insertDept, insertRole, insertEmployee, updateRole } = require("./query");
+const {
+  insertDept,
+  insertRole,
+  insertEmployee,
+  updateRole,
+} = require("./query");
 
 const viewDept = function () {
   db.query("SELECT * FROM department", (err, result) => {
@@ -25,7 +30,10 @@ const viewRole = function () {
 };
 
 const viewEmployee = function () {
-  db.query("SELECT * FROM employee", (err, result) => console.table(result));
+  db.query(
+    "SELECT e.id, CONCAT(e.first_name, ' ', e.last_name) as Name, r.title as Title, d.department_name as Department, CONCAT(m.first_name, ' ', m.last_name) AS Manager, r.salary as Salary FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT JOIN employee m ON e.manager_id = m.id",
+    (err, result) => console.table(result)
+  );
 };
 
 const addDept = function () {
@@ -70,38 +78,45 @@ const addRole = function () {
 
 const addEmployee = function () {
   let employeeList;
+  let roleList;
   db.query("SELECT first_name, last_name FROM employee", (err, result) => {
     employeeList = result.map((emp) => {
       return `${emp.first_name} ${emp.last_name}`;
     });
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          name: "firstName",
-          message: "What is the employee's first name?",
-        },
-        {
-          type: "input",
-          name: "lastName",
-          message: "What is the employee's last name?",
-        },
-        {
-          type: "input",
-          name: "role",
-          message: "What is the employee's role?",
-        },
-        {
-          type: "list",
-          name: "manager",
-          message: "Who is the employee's manager?",
-          choices: employeeList,
-        },
-      ])
-      .then((answers) => {
-        const newEmployee = answers;
-        insertEmployee(newEmployee);
+    db.query("SELECT title FROM role", (err, result) => {
+      roleList = result.map((role) => {
+        return `${role.title}`;
       });
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "firstName",
+            message: "What is the employee's first name?",
+          },
+          {
+            type: "input",
+            name: "lastName",
+            message: "What is the employee's last name?",
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "What is the employee's role?",
+            choices: roleList,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "Who is the employee's manager?",
+            choices: employeeList,
+          },
+        ])
+        .then((answers) => {
+          const newEmployee = answers;
+          insertEmployee(newEmployee);
+        });
+    });
   });
 };
 
@@ -138,7 +153,6 @@ const updateEmployee = function () {
     });
   });
 };
-
 
 const edits = {
   viewDept,
