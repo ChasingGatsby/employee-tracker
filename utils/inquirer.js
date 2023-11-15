@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const consoleTable = require("console.table");
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -106,20 +107,38 @@ const addEmployee = function () {
 
 const updateEmployee = function () {
   let employeeList;
+  let roleList;
   db.query("SELECT first_name, last_name FROM employee", (err, result) => {
     employeeList = result.map((emp) => {
       return `${emp.first_name} ${emp.last_name}`;
     });
-    inquirer.prompt([
-      {
-        type: "list",
-        name: "employee",
-        message: "Which employee's role do you want to update?",
-        choices: employeeList,
-      },
-    ]);
+    db.query("SELECT title FROM role", (err, result) => {
+      roleList = result.map((role) => {
+        return `${role.title}`;
+      });
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employee",
+            message: "Which employee's role do you want to update?",
+            choices: employeeList,
+          },
+          {
+            type: "list",
+            name: "newRole",
+            message: "What is their new role?",
+            choices: roleList,
+          },
+        ])
+        .then((answers) => {
+          const newRole = answers;
+          updateRole(newRole);
+        });
+    });
   });
 };
+
 
 const edits = {
   viewDept,

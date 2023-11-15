@@ -10,10 +10,7 @@ const {
   updateEmployee,
 } = require("./utils/inquirer");
 
-let promptEnd = false;
-
 function promptUser() {
-  promptEnd = false;
   inquirer
     .prompt([
       {
@@ -46,9 +43,14 @@ function promptUser() {
       } else if (choice === "Add Employee") {
         addEmployee();
       } else if (choice === "Update Employee Role") {
-        updateEmployee()
+        updateEmployee();
       }
+      // promptUser();
     });
 }
 
-promptUser();
+function init () {
+  promptUser()
+}
+
+init()

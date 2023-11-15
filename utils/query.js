@@ -72,6 +72,10 @@ const insertEmployee = (data) => {
   );
 };
 
-const query = { insertDept, insertRole, insertEmployee };
+const updateRole = (data) => {
+  const
+}
+
+const query = { insertDept, insertRole, insertEmployee,updateRole };
 
 module.exports = query;
