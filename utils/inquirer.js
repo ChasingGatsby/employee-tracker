@@ -10,7 +10,7 @@ const db = mysql.createConnection(
   },
   console.log("Connected to employee_db database")
 );
-const { insertDept, insertRole, insertEmployee } = require("./query");
+const { insertDept, insertRole, insertEmployee, updateRole } = require("./query");
 
 const viewDept = function () {
   db.query("SELECT * FROM department", (err, result) => {

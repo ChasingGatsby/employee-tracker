@@ -73,9 +73,26 @@ const insertEmployee = (data) => {
 };
 
 const updateRole = (data) => {
-  const
-}
+  const { employee, newRole } = data;
+  const employeeName = employee.split(" ");
+  db.query(`SELECT id FROM role WHERE title = '${newRole}'`, (err, result) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    db.query(
+      `UPDATE role_id FROM employee SET role_id = '${result}' WHERE first_name = '${employeeName[0]}' and last_name = '${employeeName[1]}'`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log("Employee's Role Updated");
+      }
+    );
+  });
+};
 
-const query = { insertDept, insertRole, insertEmployee,updateRole };
+const query = { insertDept, insertRole, insertEmployee, updateRole };
 
 module.exports = query;
