@@ -64,28 +64,34 @@ const addDept = function () {
 };
 
 const addRole = function () {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "What is the name of the role?",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "What is the salary of the role?",
-      },
-      {
-        type: "input",
-        name: "department",
-        message: "What department does this role belong to?",
-      },
-    ])
-    .then((answer) => {
-      const newRole = answer;
-      insertRole(newRole);
+  db.query("SELECT department_name FROM department", (err, result) => {
+    deptList = result.map((dept) => {
+      return `${dept.department_name}`;
     });
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "title",
+          message: "What is the name of the role?",
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "What is the salary of the role?",
+        },
+        {
+          type: "list",
+          name: "department",
+          message: "What department does this role belong to?",
+          choices: deptList,
+        },
+      ])
+      .then((answer) => {
+        const newRole = answer;
+        insertRole(newRole);
+      });
+  });
 };
 
 const addEmployee = function () {

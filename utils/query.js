@@ -30,7 +30,6 @@ const insertRole = (data) => {
         console.log(err);
       } else {
         const deptID = result[0].id;
-        console.log(deptID);
         db.query(
           `INSERT INTO role (title, salary, department_id) VALUES ('${title}', ${salary}, ${deptID})`,
           (err, result) => {
@@ -81,7 +80,7 @@ const updateRole = (data) => {
       return;
     }
     db.query(
-      `UPDATE role_id FROM employee SET role_id = '${result}' WHERE first_name = '${employeeName[0]}' and last_name = '${employeeName[1]}'`,
+      `UPDATE employee SET role_id = ${result[0].id} WHERE first_name = '${employeeName[0]}' AND last_name = '${employeeName[1]}'`,
       (err, result) => {
         if (err) {
           console.log(err);
