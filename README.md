@@ -22,7 +22,7 @@
   Clone off of GitHub. Make sure to have packages for inquirer, mysql2, and console.table installed before starting the application.
 
   ## Usage
-  Initialize the app through node.
+  Initialize the app through node. [Click for a video demonstration of application.](https://drive.google.com/file/d/1QTUjoJbtVRGz56bz4YQ_y0kOv01rxnHx/view)
 
   ## Contributions
   Feel free to contact me!
