@@ -2,6 +2,8 @@
   "dependencies": {
     "console.table": "^0.10.0",
     "inquirer": "^8.2.4",
+    "keypress": "^0.2.1",
+    "mysql": "^2.18.1",
     "mysql2": "^3.6.3",
     "sequelize": "^6.35.0"
   },

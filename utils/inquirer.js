@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const consoleTable = require("console.table");
+const keypress = require("keypress");
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -21,6 +22,9 @@ const viewDept = function () {
   db.query(
     "SELECT id, department_name as Department FROM department",
     (err, result) => {
+      if (err) {
+        console.log(err);
+      }
       console.table(result);
     }
   );
@@ -38,7 +42,9 @@ const viewRole = function () {
 const viewEmployee = function () {
   db.query(
     "SELECT e.id, CONCAT(e.first_name, ' ', e.last_name) as Name, r.title as Title, d.department_name as Department, CONCAT(m.first_name, ' ', m.last_name) AS Manager, r.salary as Salary FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT JOIN employee m ON e.manager_id = m.id",
-    (err, result) => console.table(result)
+    (err, result) => {
+      console.table(result);
+    }
   );
 };
 
